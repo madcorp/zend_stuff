@@ -54,7 +54,7 @@ class Bone_Validate_Url extends Zend_Validate_Abstract {
         
         $tlds = $this->tlds;
         
-        $protocol = '((https?):\/{2})?';
+        $protocol = '((https?):\/{2})?'; // only http and https are accepted
         $domain = '((([a-z0-9]+(\-)+?[a-z0-9-]+[^\-])|([a-z0-9]+))\.)+('.$tlds.')';
         $port = '(:[0-9]+)?';
         $page = '(\/([~0-9a-zA-Z\#\+\%@\.\/_-]+)?)?';
@@ -89,15 +89,26 @@ class Bone_Validate_Url extends Zend_Validate_Abstract {
             $this->_setValue($value);
             $url = $value;
         }
-                
-        $url_minus_protocol = preg_match('/^(https?:\/\/)/', $url) ? preg_replace('/^(https?:\/\/)/', '', $url) : $url;
+        
+        $protocol = parse_url($url, PHP_URL_SCHEME);
+        
+        if($protocol == null){
+            $protocol = 'http://';
+            $url_minus_protocol = $url;
+        } else {
+            $protocol = $protocol.'://';
+            $url_minus_protocol = preg_replace('#^('.$protocol.')#', '', $url);
+        }
+        
         $maxPos = strpos($url_minus_protocol, '/');
         
         if($maxPos === false){
             $host = $url_minus_protocol;
+            $url = $protocol.$host;
         } else {
             $host = substr($url_minus_protocol, 0, $maxPos);
             $pageStuff = substr($url_minus_protocol, $maxPos);
+            $url = $pageStuff == '/' ? $protocol.$host : $protocol.$host.$pageStuff;
         }
         
         // converting the host to IDN*
