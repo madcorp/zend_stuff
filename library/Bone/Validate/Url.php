@@ -32,7 +32,7 @@ class Bone_Validate_Url extends Zend_Validate_Abstract {
     protected $_pattern;
     
     public function __construct() {
-        $this->setPattern();
+        self::setPattern();
     }
     
     /**
