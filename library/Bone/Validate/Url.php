@@ -118,7 +118,7 @@ class Bone_Validate_Url extends Zend_Validate_Abstract {
         // The hostname length looks OK.
         // Now we will perform full URL check.
         if(isset($pageStuff) && strlen($pageStuff) > 1){
-            // Our regex-pattern works only with ascii characters, so we urlencode all stuff after first .tld/
+            // Our regex-pattern works only with ascii characters, so we urlencode all stuff after .tld/
             $encodedPageStuff = str_replace(array("%20", "%2F"),array("+", "/"), urlencode(urldecode($pageStuff)));
             $idn_url = str_replace($host, $idn_host, str_replace($pageStuff, $encodedPageStuff, $url));
         } else {
