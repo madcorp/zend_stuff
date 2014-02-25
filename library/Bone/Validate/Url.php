@@ -8,6 +8,7 @@
  * @package    Bone_Validate
  * @subpackage Bone_Validate_Url
  * @author     Radostin Nonkin
+ * @link       http://madcorp.wordpress.com/2014/02/25/zf1-url-validator/
  */
  
  // require_once LIBRARY_PATH . '/Zend/Validate/Abstract.php';
@@ -134,7 +135,7 @@ class Bone_Validate_Url extends Zend_Validate_Abstract {
             return false;
         }
         
-        // Maximum lenght for the domainname is 63 and for whole hostname 255
+        // Maximum length for the domainname is 63 and for whole hostname 255
         $domain_parts = array_reverse( explode('.', $host) );
         if(mb_strlen($domain_parts[1], 'utf-8') > 63 || mb_strlen($host, 'utf-8') > 255){
             $this->_error(self::NOT_VALID_URL);
